@@ -42,7 +42,7 @@ The user of this react application should be able to view the video response(s) 
 
 ## API Usage
 
-API can be launched using npm start. You will need to run npm install once you starting working on the project to install dependencies.
+You will need to run npm install once you starting working on the project to install dependencies.
 
 | Endpoint                     | Result                                              |
 |------------------------------|-----------------------------------------------------|
@@ -50,6 +50,6 @@ API can be launched using npm start. You will need to run npm install once you s
 | /questions                   | Lists all available questions                       |
 | /applications                | Lists all available applications                    |
 
-More info about API usage can be found at the [json-server repo](https://github.com/typicode/json-server).
+To lunch API, use the script `npm run start:api` 
 
 ---

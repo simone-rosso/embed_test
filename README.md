@@ -69,6 +69,7 @@ To lunch API, use the script `npm run start:api`
 - routers
 - redux
 - vitest
+- prettier
 
 PERFORMANCE
 DOCUMENTATION

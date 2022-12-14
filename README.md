@@ -53,3 +53,27 @@ You will need to run npm install once you starting working on the project to ins
 To lunch API, use the script `npm run start:api` 
 
 ---
+
+## Scaffolding
+- backend folder
+- src for frontend
+- test
+-
+
+## Libraries
+
+- vite -> package manager
+- react
+- material ui?
+- animations
+- routers
+- redux
+- vitest
+
+PERFORMANCE
+DOCUMENTATION
+TESTS
+ANIMATIONS (SPRING? )
+DEPLOY
+TITLE AND FAVICON
+COPYRIGHT

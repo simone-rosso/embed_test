@@ -16,13 +16,13 @@ import './App.css'
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: "/applications:candidateId:questionId",
     element: <Candidates />,
   },
   {
-    path: "/applications:id",
+    path: "/",
     element: <Applications />,
-  },
+  }
 ]);
 
 

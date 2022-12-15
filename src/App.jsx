@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { setInitialState } from "./redux/actions";
 
 import { Candidates, Applications } from './pages'
@@ -25,44 +25,27 @@ const router = createBrowserRouter([
   },
 ]);
 
-function getAllQuestions() {
-  const questions = fetch('http://localhost:3010/questions')
-    .then((response) => response.json())
-    .then((data) => (data));
-  return questions
-}
 
-function getAllCandidates() {
-  const candidates = fetch('http://localhost:3010/candidates')
+function getAll(key) {
+  const value = fetch(`http://localhost:3010/${key}`)
     .then((response) => response.json())
     .then((data) => (data));
-  return candidates
-}
-
-function getAllApplications() {
-  const applications = fetch('http://localhost:3010/applications')
-    .then((response) => response.json())
-    .then((data) => (data));
-  return applications
+  return value
 }
 
 const App = () => {
   const dispatch = useDispatch();
   const getAllData = async () => {
-    const questions = await getAllQuestions()
-    const candidates = await getAllCandidates()
-    const applications = await getAllApplications()
+    const questions = await getAll('questions')
+    const candidates = await getAll('candidates')
+    const applications = await getAll('applications')
 
     dispatch(setInitialState({ applications: applications, questions: questions, candidates: candidates }))
   };
 
-
-
   useEffect(() => {
     getAllData()
   }, [])
-
-
 
   return (
     <div className='app-layout'>

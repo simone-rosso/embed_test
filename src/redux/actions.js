@@ -1,6 +1,11 @@
 // Actions creators
 
-import { SET_CANDIDATES, SET_QUESTIONS, SET_APPLICATIONS, SET_INITIAL_STATE } from "./types";
+import { 
+    SET_CANDIDATES, 
+    SET_QUESTIONS, 
+    SET_APPLICATIONS, 
+    SET_INITIAL_STATE 
+} from "./types";
 
 export const setInitialState = (initialState) => ({
     type: SET_INITIAL_STATE,

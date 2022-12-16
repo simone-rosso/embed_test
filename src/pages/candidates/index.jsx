@@ -74,8 +74,12 @@ const CandidatePreview = ({ candidate: candidateId, question: questionId }) => {
 
     return (
         <Paper elevation={3} style={{ height: '100%' }}>
-            <div>Video: {videoOfSelectedQuestion?.src || 'error'}</div>
-            <div>Comment: {videoOfSelectedQuestion?.comments || 'error'} </div>
+            {videoOfSelectedQuestion ?
+                <>
+                    <div>Video: {videoOfSelectedQuestion?.src}</div>
+                    <div>Comment: {videoOfSelectedQuestion?.comments} </div>
+                </> : <p>No video selected</p>
+            }
         </Paper>
     )
 

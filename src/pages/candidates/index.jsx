@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router'
-import { TextField, Button, Divider, List, ListItemButton, ListItemText, ListSubheader, Card, CardMedia, CardActions, CardContent, Typography } from '@mui/material'
+import { TextField, Button, Divider, List, ListItemButton, ListItemText, ListSubheader, Card, CardMedia, CardHeader, CardActions, CardContent, Typography } from '@mui/material'
 
 const commonProps = {
     sx: {
@@ -70,12 +70,22 @@ const CandidatePreview = ({ candidate, question }) => {
     const application = applications.find(a => a.id === candidate.applicationId)
     const videoOfSelectedQuestion = application.videos.find(video => video.questionId === question.id)
 
-    const [comment, setComment] = useState(videoOfSelectedQuestion.comments)
+    const [comment, setComment] = useState(videoOfSelectedQuestion?.comments)
+
+    /*    const getSubheader = () =>{
+           return (
+   
+           )
+       } */
 
     return (
         <>
             {!!videoOfSelectedQuestion
                 ? <>
+                    <CardHeader
+                        title={candidate.name}
+                        subheader={`on: ${question.question}`}
+                    />
                     <CardMedia
                         alt={question.question}
                         height="100%"
@@ -91,7 +101,8 @@ const CandidatePreview = ({ candidate, question }) => {
                             value={comment}
                             maxRows={4}
                             variant="standard"
-                            onChange={(e)=>setComment(e.target.value)}
+                            onChange={(e) => setComment(e.target.value)}
+                            fullWidth 
                         />
                     </CardContent>
                     <CardActions>
@@ -100,7 +111,7 @@ const CandidatePreview = ({ candidate, question }) => {
                         </Button>
                     </CardActions>
                 </>
-                : <TextField>The candidate haven't uploaded a video for this question yet</TextField>}
+                : <Typography>The candidate haven't uploaded a video for this question yet</Typography>}
         </>
     )
 }
@@ -131,8 +142,8 @@ export const Candidates = () => {
                         !!candidate.id && !!candidate.applicationId ?
                             !!question.id
                                 ? <CandidatePreview question={question} candidate={candidate} />
-                                : <TextField>Select a question from the list</TextField>
-                            : candidate.id ? <TextField>The candidate has not uploaded a video application yet</TextField>
+                                : <Typography>Select a question from the list</Typography>
+                            : candidate.id ? <Typography>The candidate has not uploaded a video application yet</Typography>
                                 : null
                     }
                 </Card>

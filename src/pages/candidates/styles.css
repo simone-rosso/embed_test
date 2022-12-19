@@ -1,0 +1,12 @@
+header {
+    height: 50px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card-text {
+    padding: 25px;
+    text-align: center;
+}

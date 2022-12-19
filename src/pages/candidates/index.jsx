@@ -14,11 +14,14 @@ import {
     CardHeader,
     CardActions,
     CardContent,
-    Typography
+    Typography,
+    Alert
 } from '@mui/material'
 
+import './styles.css'
 
-// useParams would be a to-do, to take the uri from a link and use the params to match a specific video
+// useParams would be a to-do, to take the uri from a link 
+// and use the params to match a specific video
 import { useParams } from 'react-router'
 
 const commonProps = {
@@ -38,24 +41,6 @@ const commonProps = {
     }
 }
 
-function updateApplication(application) {
-    const value = fetch('http://localhost:3010/', {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-    })
-        .then((response) => response.json())
-        .then((data) => {
-            console.log('Success:', data);
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-        });
-}
-
-
 const SubHeader = ({ text }) => <ListSubheader>{text}</ListSubheader>
 
 const CandidatesList = ({ onSelectCandidate, candidate: candidateProps }) => {
@@ -68,7 +53,11 @@ const CandidatesList = ({ onSelectCandidate, candidate: candidateProps }) => {
         >
             {candidates ? candidates.map((candidate) => {
                 return (
-                    <ListItemButton key={candidate.id} onClick={() => onSelectCandidate(candidate)} selected={candidate === candidateProps}>
+                    <ListItemButton
+                        key={candidate.id}
+                        onClick={() => onSelectCandidate(candidate)}
+                        selected={candidate === candidateProps}
+                    >
                         <ListItemText primary={candidate.name} />
                     </ListItemButton>
                 )
@@ -89,7 +78,11 @@ const QuestionsList = ({ onSelectQuestion, question: selectedQuestion }) => {
 
             {questions ? questions.map((q) => {
                 return (
-                    <ListItemButton key={q.id} onClick={() => onSelectQuestion(q)} selected={selectedQuestion === q}>
+                    <ListItemButton
+                        key={q.id}
+                        onClick={() => onSelectQuestion(q)}
+                        selected={selectedQuestion === q}
+                    >
                         <ListItemText primary={q.question} />
                     </ListItemButton>
                 )
@@ -101,17 +94,30 @@ const QuestionsList = ({ onSelectQuestion, question: selectedQuestion }) => {
 }
 
 const CandidatePreview = ({ candidate, question }) => {
+    const [open, setOpen] = useState(false);
     const applications = useSelector(state => state.applications)
+
     const application = applications.find(a => a.id === candidate.applicationId)
     const videoOfSelectedQuestion = application.videos.find(video => video.questionId === question.id)
 
     const [comment, setComment] = useState(videoOfSelectedQuestion?.comments)
 
-    /*    const getSubheader = () =>{
-           return (
-   
-           )
-       } */
+    function updateApplication(application) {
+        fetch(`http://localhost:3010/applications/${application.id}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(application),
+        })
+            .then((response) => response.json())
+            .then(() => {
+                setOpen(true);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    }
 
     return (
         <>
@@ -141,22 +147,42 @@ const CandidatePreview = ({ candidate, question }) => {
                         />
                     </CardContent>
                     <CardActions>
-                        <Button size="small" color="primary">
+                        <Button
+                            size="small"
+                            color="primary"
+                            onClick={() => updateApplication({
+                                ...application, videos: application.videos.map(v => {
+                                    if (v.questionId !== question.id) return v
+                                    return { ...v, comments: comment }
+                                })
+                            })}
+                        >
                             Save
                         </Button>
                     </CardActions>
                 </>
-                : <Typography>The candidate haven't uploaded a video for this question yet</Typography>}
+                : <Typography className='card-text'>
+                    {candidate.name} hasn't uploaded a video for this question yet
+                </Typography>
+            }
+            <Snackbar
+                open={open}
+                autoHideDuration={2000}
+                onClose={() => setOpen(false)}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+            >
+                <Alert severity="success">Application succesfully updated</Alert>
+            </Snackbar>
         </>
     )
 }
 
 const DEFAULT_CANDIDATE = { name: null, id: null, applicationId: null }
 const DEFAULT_QUESTION = { id: null, question: null }
+
 export const Candidates = () => {
     const [candidate, setCandidate] = useState(DEFAULT_CANDIDATE)
     const [question, setQuestion] = useState(DEFAULT_QUESTION)
-    const [open, setOpen] = useState(false);
 
     const onSelectCandidate = (selectedCandidate) => {
         setCandidate(selectedCandidate)
@@ -164,12 +190,21 @@ export const Candidates = () => {
     }
 
     return (<main>
-        <header>EMBED RECRUITMENT CANDIDATES</header>
+        <header>
+            <Typography variant='h5'>
+                Embed Recruitmend Candidates
+            </Typography>
+        </header>
         <section style={{ display: 'flex' }}>
             <nav style={{ width: 200, height: '100vh' }}>
                 <CandidatesList onSelectCandidate={onSelectCandidate} candidate={candidate} />
                 <Divider />
-                {!!candidate.applicationId ? <QuestionsList onSelectQuestion={setQuestion} question={question} /> : null}
+                {!!candidate.applicationId
+                    ? <QuestionsList
+                        onSelectQuestion={setQuestion}
+                        question={question}
+                    />
+                    : null}
 
             </nav>
             <div style={{ width: 'calc(100% - 200px)', padding: 20 }}>
@@ -178,18 +213,14 @@ export const Candidates = () => {
                         !!candidate.id && !!candidate.applicationId ?
                             !!question.id
                                 ? <CandidatePreview question={question} candidate={candidate} />
-                                : <Typography>Select a question from the list</Typography>
-                            : candidate.id ? <Typography>The candidate has not uploaded a video application yet</Typography>
+                                : <Typography className='card-text'>Select a question from the list</Typography>
+                            : candidate.id
+                                ? <Typography className='card-text'>
+                                    {candidate.name} has not uploaded a video application yet
+                                </Typography>
                                 : null
                     }
                 </Card>
-                <Snackbar
-                    open={open}
-                    autoHideDuration={6000}
-                    onClose={handleClose}
-                    message="Note archived"
-                    action={action}
-                />
             </div>
         </section>
     </main>)

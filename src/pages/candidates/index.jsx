@@ -23,7 +23,7 @@ const commonProps = {
 
 const SubHeader = ({ text }) => <ListSubheader>{text}</ListSubheader>
 
-const CandidatesList = ({ onSelectCandidate, candidate }) => {
+const CandidatesList = ({ onSelectCandidate, candidate: candidateProps }) => {
     const candidates = useSelector(state => state.candidates)
 
     return (
@@ -31,13 +31,11 @@ const CandidatesList = ({ onSelectCandidate, candidate }) => {
             {...commonProps}
             subheader={<SubHeader text={'candidates'} />}
         >
-            {candidates ? candidates.map(({ applicationId, name, id }) => {
+            {candidates ? candidates.map((candidate) => {
                 return (
-                    <Tooltip key={id} title={applicationId ? name : "Candidate doesn't have uploaded any video yet"}>
-                        <ListItemButton key={id} /* disabled={!applicationId} */ onClick={() => onSelectCandidate(applicationId)} selected={candidate === applicationId}>
-                            <ListItemText primary={name} />
-                        </ListItemButton>
-                    </Tooltip>
+                    <ListItemButton key={candidate.id} onClick={() => onSelectCandidate(candidate)} selected={candidate === candidateProps}>
+                        <ListItemText primary={candidate.name} />
+                    </ListItemButton>
                 )
             }) : null}
 
@@ -69,25 +67,24 @@ const QuestionsList = ({ onSelectQuestion, question: selectedQuestion }) => {
 
 const CandidatePreview = ({ candidate: candidateId, question: questionId }) => {
     const applications = useSelector(state => state.applications)
-    const selectedCandidate = applications.find(application => application.id === candidateId)
-    const videoOfSelectedQuestion = selectedCandidate?.videos.find(video => video.questionId === questionId)
 
     return (
         <Paper elevation={3} style={{ height: '100%' }}>
-            {videoOfSelectedQuestion ?
-                <>
+            {videoOfSelectedQuestion
+                ? <>
                     <div>Video: {videoOfSelectedQuestion?.src}</div>
                     <div>Comment: {videoOfSelectedQuestion?.comments} </div>
-                </> : <p>No video selected</p>
+                </>
+                : <p>No video was found</p>
             }
         </Paper>
     )
 
 }
 
-
+const DEFAULT_CANDIDATE = { name: null, id: null, applicationId: null }
 export const Candidates = () => {
-    const [candidate, setCandidate] = useState(null)
+    const [candidate, setCandidate] = useState(DEFAULT_CANDIDATE)
     const [question, setQuestion] = useState(null)
     const applications = useSelector(state => state.applications)
     const questions = useSelector(state => state.questions)
@@ -100,10 +97,11 @@ export const Candidates = () => {
             <nav style={{ width: 200, height: '100vh' }}>
                 <CandidatesList onSelectCandidate={setCandidate} candidate={candidate} />
                 <Divider />
-                {!!candidate ? <QuestionsList onSelectQuestion={setQuestion} question={question} /> : null}
+                {!!candidate.id ? !!candidate.applicationId ? <QuestionsList onSelectQuestion={setQuestion} question={question} /> : <p>error</p> : null}
+
             </nav>
             <div style={{ width: 'calc(100% - 200px)', padding: 20 }}>
-                <CandidatePreview question={question} candidate={candidate} />
+                {/*  <CandidatePreview question={question} candidate={candidate} /> */}
             </div>
         </section>
     </main>)

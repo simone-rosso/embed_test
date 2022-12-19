@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router'
-import { Divider, List, ListItemButton, ListItemText, ListSubheader, Paper, Tooltip } from '@mui/material'
+import { TextField, Button, Divider, List, ListItemButton, ListItemText, ListSubheader, Card, CardMedia, CardActions, CardContent, Typography } from '@mui/material'
 
 const commonProps = {
     sx: {
@@ -52,10 +52,10 @@ const QuestionsList = ({ onSelectQuestion, question: selectedQuestion }) => {
             subheader={<SubHeader text={'questions'} />}
         >
 
-            {questions ? questions.map(({ id, question }) => {
+            {questions ? questions.map((q) => {
                 return (
-                    <ListItemButton key={id} onClick={() => onSelectQuestion(id)} selected={selectedQuestion === id}>
-                        <ListItemText primary={question} />
+                    <ListItemButton key={q.id} onClick={() => onSelectQuestion(q)} selected={selectedQuestion === q}>
+                        <ListItemText primary={q.question} />
                     </ListItemButton>
                 )
             }) : null}
@@ -65,43 +65,77 @@ const QuestionsList = ({ onSelectQuestion, question: selectedQuestion }) => {
 
 }
 
-const CandidatePreview = ({ candidate: candidateId, question: questionId }) => {
+const CandidatePreview = ({ candidate, question }) => {
     const applications = useSelector(state => state.applications)
+    const application = applications.find(a => a.id === candidate.applicationId)
+    const videoOfSelectedQuestion = application.videos.find(video => video.questionId === question.id)
+
+    const [comment, setComment] = useState(videoOfSelectedQuestion.comments)
 
     return (
-        <Paper elevation={3} style={{ height: '100%' }}>
-            {videoOfSelectedQuestion
+        <>
+            {!!videoOfSelectedQuestion
                 ? <>
-                    <div>Video: {videoOfSelectedQuestion?.src}</div>
-                    <div>Comment: {videoOfSelectedQuestion?.comments} </div>
+                    <CardMedia
+                        alt={question.question}
+                        height="100%"
+                        image={videoOfSelectedQuestion.src}
+                        component='video'
+                        autoPlay
+                    />
+                    <CardContent>
+                        <TextField
+                            id="filled-multiline-flexible"
+                            label="Comments"
+                            multiline
+                            value={comment}
+                            maxRows={4}
+                            variant="standard"
+                            onChange={(e)=>setComment(e.target.value)}
+                        />
+                    </CardContent>
+                    <CardActions>
+                        <Button size="small" color="primary">
+                            Share
+                        </Button>
+                    </CardActions>
                 </>
-                : <p>No video was found</p>
-            }
-        </Paper>
+                : <TextField>The candidate haven't uploaded a video for this question yet</TextField>}
+        </>
     )
-
 }
 
 const DEFAULT_CANDIDATE = { name: null, id: null, applicationId: null }
+const DEFAULT_QUESTION = { id: null, question: null }
 export const Candidates = () => {
     const [candidate, setCandidate] = useState(DEFAULT_CANDIDATE)
-    const [question, setQuestion] = useState(null)
-    const applications = useSelector(state => state.applications)
-    const questions = useSelector(state => state.questions)
+    const [question, setQuestion] = useState(DEFAULT_QUESTION)
 
-
+    const onSelectCandidate = (selectedCandidate) => {
+        setCandidate(selectedCandidate)
+        setQuestion(DEFAULT_QUESTION)
+    }
 
     return (<main>
         <header>EMBED RECRUITMENT CANDIDATES</header>
         <section style={{ display: 'flex' }}>
             <nav style={{ width: 200, height: '100vh' }}>
-                <CandidatesList onSelectCandidate={setCandidate} candidate={candidate} />
+                <CandidatesList onSelectCandidate={onSelectCandidate} candidate={candidate} />
                 <Divider />
-                {!!candidate.id ? !!candidate.applicationId ? <QuestionsList onSelectQuestion={setQuestion} question={question} /> : <p>error</p> : null}
+                {!!candidate.applicationId ? <QuestionsList onSelectQuestion={setQuestion} question={question} /> : null}
 
             </nav>
             <div style={{ width: 'calc(100% - 200px)', padding: 20 }}>
-                {/*  <CandidatePreview question={question} candidate={candidate} /> */}
+                <Card elevation={3}>
+                    {
+                        !!candidate.id && !!candidate.applicationId ?
+                            !!question.id
+                                ? <CandidatePreview question={question} candidate={candidate} />
+                                : <TextField>Select a question from the list</TextField>
+                            : candidate.id ? <TextField>The candidate has not uploaded a video application yet</TextField>
+                                : null
+                    }
+                </Card>
             </div>
         </section>
     </main>)

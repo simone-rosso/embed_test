@@ -1,7 +1,25 @@
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
+import {
+    Snackbar,
+    TextField,
+    Button,
+    Divider,
+    List,
+    ListItemButton,
+    ListItemText,
+    ListSubheader,
+    Card,
+    CardMedia,
+    CardHeader,
+    CardActions,
+    CardContent,
+    Typography
+} from '@mui/material'
+
+
+// useParams would be a to-do, to take the uri from a link and use the params to match a specific video
 import { useParams } from 'react-router'
-import { TextField, Button, Divider, List, ListItemButton, ListItemText, ListSubheader, Card, CardMedia, CardHeader, CardActions, CardContent, Typography } from '@mui/material'
 
 const commonProps = {
     sx: {
@@ -18,6 +36,23 @@ const commonProps = {
         height: '49%',
         overflowY: 'scroll'
     }
+}
+
+function updateApplication(application) {
+    const value = fetch('http://localhost:3010/', {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            console.log('Success:', data);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
 }
 
 
@@ -96,18 +131,18 @@ const CandidatePreview = ({ candidate, question }) => {
                     <CardContent>
                         <TextField
                             id="filled-multiline-flexible"
-                            label="Comments"
+                            label="Comments:"
                             multiline
                             value={comment}
                             maxRows={4}
                             variant="standard"
                             onChange={(e) => setComment(e.target.value)}
-                            fullWidth 
+                            fullWidth
                         />
                     </CardContent>
                     <CardActions>
                         <Button size="small" color="primary">
-                            Share
+                            Save
                         </Button>
                     </CardActions>
                 </>
@@ -121,6 +156,7 @@ const DEFAULT_QUESTION = { id: null, question: null }
 export const Candidates = () => {
     const [candidate, setCandidate] = useState(DEFAULT_CANDIDATE)
     const [question, setQuestion] = useState(DEFAULT_QUESTION)
+    const [open, setOpen] = useState(false);
 
     const onSelectCandidate = (selectedCandidate) => {
         setCandidate(selectedCandidate)
@@ -147,6 +183,13 @@ export const Candidates = () => {
                                 : null
                     }
                 </Card>
+                <Snackbar
+                    open={open}
+                    autoHideDuration={6000}
+                    onClose={handleClose}
+                    message="Note archived"
+                    action={action}
+                />
             </div>
         </section>
     </main>)

@@ -4,6 +4,7 @@ header {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-left: 200px;
 }
 
 .card-text {

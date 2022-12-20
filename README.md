@@ -55,33 +55,39 @@ To lunch API, use the script `npm run start:api`
 ---
 
 ## Scaffolding
-- backend folder
-- src for frontend
+- backend
+- src -> frontend
 - test
--
+- public -> assets
 
 ## Libraries
 
-- vite -> package manager
-- react
-- material ui?
-- animations
-- routers
-- redux
-- vitest
-- prettier
-
-PERFORMANCE
-DOCUMENTATION
-TESTS
-ANIMATIONS (SPRING? )
-DEPLOY
-TITLE AND FAVICON
-COPYRIGHT
+- vite for packaging
+- react for UI
+- material ui for components
+- react router for SPA routing
+- redux for state management
 
 ## Setup
 
 Originally I thought to develop an application with two screens, in the first one, the applications page, there would be a list of cards with all candidates with a small info panel with all details like: name, title, position where applied, brief description, total videos that the hiring manager has seen and overall evaluation.
-Clicking on the card, there would be an animation that put all the candidates in a navbar and the page switch to the candidates page (src/nadidates).
+Clicking on the card, there would be an animation that put all the candidates in a navbar and the page switch to the candidates page (src/cadidates).
 For this application I thought to implement react router to switch between pages, and redux to caching data in the store, to not make api calls if switching through pages.
 For time reason I just developed the candidates page and left the setup to develop the improvements.
+The page of candidates would have an url like 'path/candidates' that can switch to a 
+'path/candidates/applicationId=12345' in case the application '12345' is selected. This is usefull to share links about a specific video. For time reason I decided to let the candidates page in the root path.
+
+## Improvements
+
+I would like to spend more time on the development but I didn't had so much time, so basically I just did a working version of what I wanted to do.
+
+From the functional side, I would like to make urls that can split between two views, one for the list of the candidates and another (the one that i developed) that show the list of candidates, the questions and the videos. I have impemented redux and react router to achieve this.
+Another improvement would be the error and loading handling, for example using more specific error messages and skeleton when loading videos and lists.
+
+From the graphic point of view, I would like to make some improvements because it's an MVP but a little weird. I would start changing the navbars for something with less impact for the view of the user and in general improve styles. Another think that I had though was to make an animation for switching between the page with all candidates and the second with the candidates list.
+
+I would like to have more time to develop the application with, at least, unit tests with vitest and e2e tests with cypress, although for this time I did Q/A manually.
+
+For the performance, I was thinking on create two different builds, one for the development mode and one optimized for production, but, for the same reason that I didn't deployed the application, it was sort of useless. The same think I left aside for a serverless database with Firebase. It would be interesting populating the database to measure the performance.
+
+From the product development himself, I think that there would be a lot of thing that could be improved, a few ideas are already in the previous section (Setup).

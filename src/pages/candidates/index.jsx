@@ -130,6 +130,7 @@ const CandidatePreview = ({ candidate, question }) => {
                     <CardMedia
                         alt={question.question}
                         height="100%"
+                        style={{ maxHeight: 300 }}
                         image={videoOfSelectedQuestion.src}
                         component='video'
                         autoPlay

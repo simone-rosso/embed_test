@@ -1,7 +1,14 @@
+@font-face {
+    font-family: 'FontEmbed';
+    src: url('assets/font_embed.woff2') format('woff2');
+    font-weight: 400;
+}
+
 body {
     margin: 0;
     height: 100vh;
-    background: rgba(243, 246, 249)
+    background: rgba(243, 246, 249);
+    font-family: 'FontEmbed', Arial, Tahoma, PingFangSC, sans-serif;
 }
 
 #id {

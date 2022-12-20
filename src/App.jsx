@@ -1,27 +1,32 @@
+'use strict'
+
+// Dependdencies
 import React, { useEffect } from 'react'
 import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
 import { useDispatch } from 'react-redux'
+
+// Redux
 import { setInitialState } from "./redux/actions";
 
-import { Candidates, Applications } from './pages'
-
-import './App.css'
-
-
-// add a page not found component for undefined routes
-// const PageNotFound = () => <p>page not found</p>
+// Components
+import { Candidates } from './pages'
 
 const router = createBrowserRouter([
+
+  /* With more time I would have implemented different routes
+     add a page not found component for undefined routes
+     const PageNotFound = () => <p>page not found</p>
+
   {
-    path: "/applications:candidateId:questionId",
-    element: <Candidates />,
-  },
+    path: "/applications:id",
+    element: <Applications />,
+  }, */
   {
     path: "/",
-    element: <Applications />,
+    element: <Candidates />,
   }
 ]);
 
@@ -36,11 +41,19 @@ function getAll(key) {
 const App = () => {
   const dispatch = useDispatch();
   const getAllData = async () => {
+
+    // With the new version of react, it hasn't to be use the function batch to dispatch different actions
+    // And the calls simulate an API call to different endpoints
+
     const questions = await getAll('questions')
     const candidates = await getAll('candidates')
     const applications = await getAll('applications')
 
-    dispatch(setInitialState({ applications: applications, questions: questions, candidates: candidates }))
+    dispatch(setInitialState({
+      applications: applications,
+      questions: questions,
+      candidates: candidates
+    }))
   };
 
   useEffect(() => {

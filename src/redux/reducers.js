@@ -1,4 +1,10 @@
-import { SET_CANDIDATES, SET_APPLICATIONS, SET_QUESTIONS, SET_INITIAL_STATE } from "./types";
+import {
+    SET_CANDIDATES,
+    SET_APPLICATIONS,
+    SET_QUESTIONS,
+    SET_INITIAL_STATE,
+    UPDATE_APPLICATION
+} from "./types";
 
 const INITIAL_STATE = {
     candidates: [],
@@ -27,6 +33,14 @@ export default (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 ...action.payload
+            }
+        case UPDATE_APPLICATION:
+            return {
+                ...state,
+                applications: state.applications.map((application) => {
+                    if (application.id === action.payload.id) return action.payload
+                    return application
+                })
             }
         default:
             return state;

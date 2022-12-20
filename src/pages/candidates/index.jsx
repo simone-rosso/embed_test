@@ -1,22 +1,26 @@
 import { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import {
-    Snackbar,
-    TextField,
+    Alert,
     Button,
+    Card,
+    CardActions,
+    CardContent,
+    CardHeader,
+    CardMedia,
     Divider,
     List,
     ListItemButton,
     ListItemText,
     ListSubheader,
-    Card,
-    CardMedia,
-    CardHeader,
-    CardActions,
-    CardContent,
-    Typography,
-    Alert
+    Slide,
+    Snackbar,
+    TextField,
+    Typography
 } from '@mui/material'
+
+// Redux
+import { updateApplication } from "../../redux/actions";
 
 import './styles.css'
 
@@ -37,8 +41,9 @@ const commonProps = {
     },
     style: {
         height: '49%',
-        overflowY: 'scroll'
-    }
+        overflowY: 'scroll',
+    },
+    className: 'scrolling-list'
 }
 
 const SubHeader = ({ text }) => <ListSubheader>{text}</ListSubheader>
@@ -50,6 +55,7 @@ const CandidatesList = ({ onSelectCandidate, candidate: candidateProps }) => {
         <List
             {...commonProps}
             subheader={<SubHeader text={'candidates'} />}
+            {...!candidateProps.applicationId && { style: { height: '100%' } }}
         >
             {candidates ? candidates.map((candidate) => {
                 return (
@@ -90,12 +96,16 @@ const QuestionsList = ({ onSelectQuestion, question: selectedQuestion }) => {
 
         </List >
     )
+}
 
+function TransitionLeft(props) {
+    return <Slide {...props} direction="left" />;
 }
 
 const CandidatePreview = ({ candidate, question }) => {
     const [open, setOpen] = useState(false);
     const applications = useSelector(state => state.applications)
+    const dispatch = useDispatch();
 
     const application = applications.find(a => a.id === candidate.applicationId)
     const videoOfSelectedQuestion = application.videos.find(video => video.questionId === question.id)
@@ -111,7 +121,9 @@ const CandidatePreview = ({ candidate, question }) => {
             body: JSON.stringify(application),
         })
             .then((response) => response.json())
-            .then(() => {
+            .then((updatedApplication) => {
+                //    dispatch(updateApplication(updatedApplication)) 
+                console.log(applications)
                 setOpen(true);
             })
             .catch((error) => {
@@ -151,6 +163,7 @@ const CandidatePreview = ({ candidate, question }) => {
                         <Button
                             size="small"
                             color="primary"
+                            variant="contained"
                             onClick={() => updateApplication({
                                 ...application, videos: application.videos.map(v => {
                                     if (v.questionId !== question.id) return v
@@ -162,17 +175,18 @@ const CandidatePreview = ({ candidate, question }) => {
                         </Button>
                     </CardActions>
                 </>
-                : <Typography className='card-text'>
+                : <p className='card-text'>
                     {candidate.name} hasn't uploaded a video for this question yet
-                </Typography>
+                </p>
             }
             <Snackbar
                 open={open}
                 autoHideDuration={2000}
                 onClose={() => setOpen(false)}
                 anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                TransitionComponent={TransitionLeft}
             >
-                <Alert severity="success">Application succesfully updated</Alert>
+                <Alert severity="success" variant='filled'>Application succesfully updated</Alert>
             </Snackbar>
         </>
     )
@@ -192,19 +206,28 @@ export const Candidates = () => {
 
     return (<main>
         <header>
-            <Typography variant='h5'>
-                Embed Recruitmend Candidates
-            </Typography>
+            <div>
+                <img src="https://www.embed.xyz/img/logo-small-color.svg" alt="Embed Logo" />
+                <span className='header-logo-name'>embed</span>
+            </div>
+            <h2 className='title-page'>
+                Recruitmend Candidates
+            </h2>
         </header>
         <section style={{ display: 'flex' }}>
             <nav style={{ width: 200, height: '100vh' }}>
-                <CandidatesList onSelectCandidate={onSelectCandidate} candidate={candidate} />
-                <Divider />
+                <CandidatesList
+                    onSelectCandidate={onSelectCandidate}
+                    candidate={candidate}
+                />
                 {!!candidate.applicationId
-                    ? <QuestionsList
-                        onSelectQuestion={setQuestion}
-                        question={question}
-                    />
+                    ? <>
+                        <Divider />
+                        <QuestionsList
+                            onSelectQuestion={setQuestion}
+                            question={question}
+                        />
+                    </>
                     : null}
 
             </nav>
@@ -214,11 +237,11 @@ export const Candidates = () => {
                         !!candidate.id && !!candidate.applicationId ?
                             !!question.id
                                 ? <CandidatePreview question={question} candidate={candidate} />
-                                : <Typography className='card-text'>Select a question from the list</Typography>
+                                : <p className='card-text'>Select a question from the list</p>
                             : candidate.id
-                                ? <Typography className='card-text'>
+                                ? <p className='card-text'>
                                     {candidate.name} has not uploaded a video application yet
-                                </Typography>
+                                </p>
                                 : null
                     }
                 </Card>

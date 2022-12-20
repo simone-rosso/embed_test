@@ -27,6 +27,14 @@
     {
       "id": 1393,
       "name": "Karina Fraser"
+    },
+    {
+      "id": 1394,
+      "name": "Charles Darwin"
+    },
+    {
+      "id": 1395,
+      "name": "Marie Curie"
     }
   ],
   "questions": [
@@ -58,12 +66,12 @@
         {
           "src": "https://dashboard.knockri.com/assets?f=124546.mp4",
           "questionId": 12,
-          "comments": "this is an hardcoded comment"
+          "comments": "This candidate talks three languages."
         },
         {
           "src": "https://dashboard.knockri.com/assets?f=32343.mp4",
           "questionId": 14,
-          "comments": ""
+          "comments": "Comment on video 2"
         },
         {
           "src": "https://dashboard.knockri.com/assets?f=3545646.mp4",
@@ -103,7 +111,7 @@
         {
           "src": "https://dashboard.knockri.com/assets?f=564534.mp4",
           "questionId": 12,
-          "comments": "this is a comment on albert\n"
+          "comments": "this is a comment on albert"
         }
       ]
     }

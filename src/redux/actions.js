@@ -4,7 +4,8 @@ import {
     SET_CANDIDATES, 
     SET_QUESTIONS, 
     SET_APPLICATIONS, 
-    SET_INITIAL_STATE 
+    SET_INITIAL_STATE,
+    UPDATE_APPLICATION
 } from "./types";
 
 export const setInitialState = (initialState) => ({
@@ -25,4 +26,9 @@ export const setApplications = (applications) => ({
 export const setQuestions = (questions) => ({
     type: SET_QUESTIONS,
     payload: questions
+})
+
+export const updateApplication = (application) => ({
+    type: UPDATE_APPLICATION,
+    payload: application
 })

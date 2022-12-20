@@ -7,22 +7,6 @@ The purpose of this assessment is to assess your **skills and approach to compos
 
 This assessment is expected to take about 2-3 hours.
 
-## What to do?
-
-Your goal is to implement a simple React application, where users will be able to view a job candidate's video responses, comment on the responses & save the data. The UX/UI is totally up to you.
-
-Although its a very basic exercise, we will be looking for simple, well-designed, well-commented and tested code in the submission.
-
-Please include a `README` with setup instructions, and any other documentation you created as part of your solution.
-
-Also, add very short info for the following to your `README`:
-
-* How did you decide which technologies to use as part of your solution?
-* Are there any improvements you could make to your submission?
-* What would you do differently if you were allocated more time?
-
-Once you complete implementation, please send us the link to the hosted repository (e.g. Github, Bitbucket...)
-
 ## How should the application work?
 
 The user of this react application should be able to view the video response(s) of job candidates applying for a job at their company. The application should have the following workflow,
@@ -50,7 +34,8 @@ You will need to run npm install once you starting working on the project to ins
 | /questions                   | Lists all available questions                       |
 | /applications                | Lists all available applications                    |
 
-To lunch API, use the script `npm run start:api` 
+* To lunch API, use the script `npm run start:api` 
+* To lunch Ui, use the script `npm run dev`
 
 ---
 
@@ -58,7 +43,7 @@ To lunch API, use the script `npm run start:api`
 - backend
 - src -> frontend
 - test
-- public -> assets
+- public -> assets 
 
 ## Libraries
 
@@ -67,6 +52,7 @@ To lunch API, use the script `npm run start:api`
 - material ui for components
 - react router for SPA routing
 - redux for state management
+- prettier for 
 
 ## Setup
 
@@ -82,12 +68,21 @@ The page of candidates would have an url like 'path/candidates' that can switch 
 I would like to spend more time on the development but I didn't had so much time, so basically I just did a working version of what I wanted to do.
 
 From the functional side, I would like to make urls that can split between two views, one for the list of the candidates and another (the one that i developed) that show the list of candidates, the questions and the videos. I have impemented redux and react router to achieve this.
-Another improvement would be the error and loading handling, for example using more specific error messages and skeleton when loading videos and lists.
+Another improvement would be the error and loading handling, for example using more specific error messages and skeleton when the page is loading videos and lists.
 
-From the graphic point of view, I would like to make some improvements because it's an MVP but a little weird. I would start changing the navbars for something with less impact for the view of the user and in general improve styles. Another think that I had though was to make an animation for switching between the page with all candidates and the second with the candidates list.
+From the graphic point of view, I would like to make some improvements because it's an MVP but a little ugly. I would start changing the navbars for something with less impact for the view of the user and in general improve styles. Another think that I had though was to make an animation for switching between the page with all candidates and the second with the candidates list.
 
 I would like to have more time to develop the application with, at least, unit tests with vitest and e2e tests with cypress, although for this time I did Q/A manually.
 
-For the performance, I was thinking on create two different builds, one for the development mode and one optimized for production, but, for the same reason that I didn't deployed the application, it was sort of useless. The same think I left aside for a serverless database with Firebase. It would be interesting populating the database to measure the performance.
+For the performance, I was thinking on create two different configurations for the builds and different environment, one for the development mode and one optimized for production, but, for the same reason that I didn't deployed the application, it was sort of useless. The same think I left aside for a serverless database with Firebase. It would be interesting populating the database to measure the performances.
 
-From the product development himself, I think that there would be a lot of thing that could be improved, a few ideas are already in the previous section (Setup).
+From the product development himself, I think that there would be a lot of thing that could be improved, a few ideas are already in the previous section (Setup), and more like:
+
+- login
+- multi comments from different users
+- evaluation of the video based on points from 1-10
+- CRUD for comments and evaluations
+- already visited showed by a check on the candidate and questions
+- share video
+- dark mode
+- i18n

@@ -38,21 +38,21 @@ You will need to run npm install once you starting working on the project to ins
 * To lunch Ui, use the script `npm run dev`
 
 ---
+# Explanation
 
 ## Scaffolding
 - backend
 - src -> frontend
-- test
 - public -> assets 
 
 ## Libraries
 
-- vite for packaging
-- react for UI
-- material ui for components
-- react router for SPA routing
-- redux for state management
-- prettier for 
+- [Vite](https://vitejs.dev/) for packaging
+- [React](https://facebook.github.io/react/)  for UI
+- [Material UI](https://mui.com/) for components
+- [React Router](https://reactrouter.com/en/main) for SPA routing
+- [Redux](https://redux.js.org/) for state management
+- [Prettier](https://prettier.io/) for formatting code 
 
 ## Setup
 
@@ -67,10 +67,12 @@ The page of candidates would have an url like 'path/candidates' that can switch 
 
 I would like to spend more time on the development but I didn't had so much time, so basically I just did a working version of what I wanted to do.
 
+From the code side, I would have more time to split code in a more scalable way.
+
 From the functional side, I would like to make urls that can split between two views, one for the list of the candidates and another (the one that i developed) that show the list of candidates, the questions and the videos. I have impemented redux and react router to achieve this.
 Another improvement would be the error and loading handling, for example using more specific error messages and skeleton when the page is loading videos and lists.
 
-From the graphic point of view, I would like to make some improvements because it's an MVP but a little ugly. I would start changing the navbars for something with less impact for the view of the user and in general improve styles. Another think that I had though was to make an animation for switching between the page with all candidates and the second with the candidates list.
+From the graphic point of view, I would like to make some graphical improvements because it's an MVP. I would start changing the navbars for something with less impact for the view of the user and in general improve styles. Another think that I had though was to make an animation for switching between the page with all candidates and the second with the candidates list.
 
 I would like to have more time to develop the application with, at least, unit tests with vitest and e2e tests with cypress, although for this time I did Q/A manually.
 
